@@ -44,7 +44,7 @@ spec:
         - name: mysql-storage
           mountPath: /var/lib/mysql
         - name: initdb
-          mountPath: /docker-entrypoint-initdb.d
+          mountPath: /docker-entrypoint-initdb.d # 초기화 스크립트를 저장하는 특별한 위치 디렉토리에 있는 모든 .sh, .sql, .sql.gz 파일이 자동으로 실행
       volumes:
       - name: mysql-storage
         persistentVolumeClaim:
@@ -52,18 +52,3 @@ spec:
       - name: initdb
         configMap:
           name: mysql-initdb-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec:
-  type: NodePort
-  ports:
-  - name: mysql-port
-    port: 3306
-    targetPort: 3306
-    nodePort: 30006
-  selector:
-    app: mysql
-
